@@ -1,0 +1,6 @@
+qsound.ot
+-ii valogo16.pic startofpic
+-ii copter.snd helicopter_snd
+-ii phaser.snd gunshot_snd
+-ii mix3.snd explosion_snd
+

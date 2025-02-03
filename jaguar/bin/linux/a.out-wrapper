@@ -1,0 +1,2 @@
+#!/bin/sh
+aout-loader "${0}-a.out" "$@"

@@ -1,0 +1,313 @@
+#!/bin/bash
+# Copyright 2019 Kees Cook <keescook@chromium.org>
+# License: GPLv2+
+
+# Run only one at a time.
+#[ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -en "$0" "$0"
+
+# Fail on any uncaught errors
+set -e
+# Fail on undefined variables
+set -u
+
+# prepare environment
+CONFIG="$HOME/.config/coverity-build"
+CACHE="$HOME/.cache/coverity-build"
+mkdir -p "$CONFIG" "$CACHE"
+
+# Only run one at a time
+exec 99>"$CACHE"/run.lock
+if flock -en 99; then :
+else
+	#echo "already running" >&2
+	exit 0
+fi
+
+if [ ! -r "$CONFIG/settings" ]; then
+	echo "echo 'Please update $CONFIG/settings with your Coverity settings' >&2" >> "$CACHE/settings"
+	echo "exit 1" >> "$CONFIG/settings"
+	echo '# Coverity project name as it appears on the dashboard, with any spaces.' >> "$CONFIG/settings"
+	echo '# e.g. "linux-next weekly scan" for' >> "$CONFIG/settings"
+	echo '# https://scan.coverity.com/projects/linux-next-weekly-scan' >> "$CONFIG/settings"
+	echo 'coverity_project="fancy-pants project"' >> "$CONFIG/settings"
+	echo "# Email address of admin account in project" >> "$CONFIG/settings"
+	echo "coverity_email=you@example.com" >> "$CONFIG/settings"
+	echo "# Token for project analysis uploads" >> "$CONFIG/settings"
+	echo "coverity_token=your-token" >> "$CONFIG/settings"
+	echo "# Path to Coverity binaries" >> "$CONFIG/settings"
+	echo 'coverity_path="$HOME"/path/to/cov-analysis-linux64-YYYY.MM/bin' >> "$CONFIG/settings"
+	echo "# Command to receive output from cron runs" >> "$CONFIG/settings"
+	echo '# e.g. "mail me@example"' >> "$CONFIG/settings"
+	echo "coverity_cron_pipe=command-to-pipe-cron-reports" >> "$CONFIG/settings"
+	echo "# Directory for git worktree checkouts and builds" >> "$CONFIG/settings"
+	echo 'coverity_build_dir="$HOME"/path/to/build-source-tree' >> "$CONFIG/settings"
+	echo "# Directory contains git tree under analysis" >> "$CONFIG/settings"
+	echo 'source_git="$HOME"/path/to/upstream-kernel-git' >> "$CONFIG/settings"
+	echo "# Name of remote tree (with a 'master' branch) that contains" >> "$CONFIG/settings"
+	echo "# sequential tags. e.g. 'linux-next'" >> "$CONFIG/settings"
+	echo "build_branch=branch-to-track-for-master-tags" >> "$CONFIG/settings"
+	echo "# execution wrapper tool (if any)" >> "$CONFIG/settings"
+	echo "wrapper=" >> "$CONFIG/settings"
+	echo "# optional host to rsync to for Coverity to fetch from" >> "$CONFIG/settings"
+	echo "rsync_location=" >> "$CONFIG/settings"
+	echo "public_url=" >> "$CONFIG/settings"
+	echo "# optionally limit upload speed (nnnK, etc)" >> "$CONFIG/settings"
+	echo "upload_rate=" >> "$CONFIG/settings"
+fi
+. "$CONFIG/settings"
+
+export PATH="$PATH":"$coverity_path"
+
+skip_at_check=
+if [ "${1:-}" = "--scheduled" ] ; then
+	skip_at_check=1
+fi
+
+coverity_prepare()
+{
+	# Make sure all stamps exist
+	touch "$CACHE"/{prepare,build,collect,upload}.stamp
+
+	# fetch latest tree
+	cd "$source_git"
+	git fetch -q "$build_branch"
+
+	# skip unless there a newly added branch tag
+	latest=$(git describe --tags --abbrev=0 "$build_branch"/master)
+	current=$(cat "$CACHE"/prepare.stamp)
+	if [ "$latest" = "$current" ]; then
+			#echo "$latest already prepared" >&2
+			return
+	fi
+
+	echo "prepare $latest: ..."
+
+	# prepare worktree
+	rm -rf "$coverity_build_dir"
+	mkdir -p "$coverity_build_dir"
+	git worktree prune
+	git worktree add --detach --no-checkout "$coverity_build_dir" "$latest"
+
+	# checkout quietly (no way to add '-q' to "worktree add" yet)
+	cd "$coverity_build_dir"
+	git checkout -q HEAD
+
+	# want to compile as much of the code base as possible
+	$wrapper make -s allmodconfig
+
+	# Disable known-broken configs
+	#$wrapper ./scripts/config -d CACHE_DRM_AMDGPU
+	$wrapper ./scripts/config -d WERROR
+	$wrapper make olddefconfig >/dev/null
+
+	# Clear build failure conditions -- we have new source!
+	rm -f "$CACHE"/build.stamp.fail
+
+	echo "$latest" > "$CACHE"/prepare.stamp.new
+	mv "$CACHE"/prepare.stamp.new "$CACHE"/prepare.stamp
+	echo ""
+}
+
+coverity_build()
+{
+	cd "$coverity_build_dir"
+
+	latest=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
+	current=$(cat "$CACHE"/build.stamp)
+	if [ "$latest" = "$current" ]; then
+			#echo "$latest already built" >&2
+			return
+	fi
+
+	if [ -e "$CACHE"/build.stamp.fail ]; then
+		# We can go no further with this version.
+		#echo "$latest already failed to build" >&2
+		exit 0
+	fi
+
+	# coverity build
+	echo "build $latest: ..."
+	rm -rf build.log cov-int "$build_branch".tar "$build_branch".tar.xz
+	$wrapper cov-build --help 2>/dev/null || true
+
+	# Build, reporting warnings/errors before timing details, stop on fail.
+	set +e
+	timing=$(time ($wrapper cov-build --dir cov-int \
+			make -j$(getconf _NPROCESSORS_ONLN) \
+			     --keep-going >build.log 2>&1) 2>&1)
+	rc=$?
+	egrep -i '(error|warning):' build.log
+	echo "$timing"
+	echo ""
+	set -e
+	if [ $rc -ne 0 ]; then
+		echo "Build failed with exit code $rc" >&2
+		echo "$latest" > "$CACHE"/build.stamp.new
+		mv "$CACHE"/build.stamp.new "$CACHE"/build.stamp.fail
+		exit $rc
+	fi
+
+	# verify results
+	# Emitted 25386 C/C++ compilation units (85%) successfully
+	percent=$(grep 'Emitted.*compilation units .* successfully' \
+			cov-int/build-log.txt | cut -d'(' -f2 | cut -d'%' -f1)
+	if [ -z "$percent" ] || [ "$percent" -lt 85 ] ; then
+		echo "FAIL: build was less than 85%: $percent" >&2
+		exit 1
+	fi
+
+	# mark as built
+	echo "$latest" > "$CACHE"/build.stamp.new
+	mv "$CACHE"/build.stamp.new "$CACHE"/build.stamp
+}
+
+coverity_collect()
+{
+	cd "$coverity_build_dir"
+
+	latest=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
+	current=$(cat "$CACHE"/collect.stamp)
+	if [ "$latest" = "$current" ]; then
+			#echo "$latest already collected" >&2
+			return
+	fi
+
+	# collect results
+	echo "collect $latest: tar ..."
+	time $wrapper tar cf "$build_branch".tar cov-int
+	echo ""
+	echo "collect $latest: xz ..."
+	time $wrapper xz -z -9 -T 48 "$build_branch".tar
+	echo ""
+
+	# mark as collected
+	echo "$latest" > "$CACHE"/collect.stamp.new
+	mv "$CACHE"/collect.stamp.new "$CACHE"/collect.stamp
+}
+
+at_check()
+{
+	# do not check for ourself if we're the scheduled one
+	if [ -n "$skip_at_check" ] ; then
+		return 0
+	fi
+
+	# skip if there already a queued upload waiting
+	atq="$(atq)"
+	items="$(echo "$atq" | awk '{print $1}')"
+	if ! echo "$items" | wc -w | grep -q 0 ; then
+		for job in $items; do
+			if at -c $job | grep -q ^"$0"'\b' ; then
+				echo "$atq" | grep "^$job"'\b' | awk '{print $2" "$3" "$4" "$5" "$6}'
+				return 0
+			fi
+		done
+	fi
+}
+
+coverity_upload()
+{
+	# In case we need to add global flags (like --cacert)
+	CURL="curl"
+
+	latest=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
+	current=$(cat "$CACHE"/upload.stamp)
+	if [ "$latest" = "$current" ]; then
+			#echo "$latest already uploaded" >&2
+			return
+	fi
+
+	url=$(echo "$coverity_project" | sed -e 's/ /-/g')
+	scanned=$($CURL -so- "https://scan.coverity.com/projects/$url" | grep '<p>Version: ' | awk -F": " '{print $2}' | cut -d'<' -f1)
+	if [ "$latest" = "$scanned" ]; then
+		#echo "$scanned already present on dashboard"
+		# mark as uploaded
+		echo "$latest" > "$CACHE"/upload.stamp.new
+		mv "$CACHE"/upload.stamp.new "$CACHE"/upload.stamp
+		return
+	fi
+
+	when=$(at_check)
+	if [ -n "$when" ] ; then
+		echo "$latest already queued for upload on $when" >&2
+		exit 1
+	fi
+
+	# upload to coverity
+	ls -la "$build_branch".tar.xz
+	if [ -n "${rsync_location:-}" ]; then
+		echo "upload to bandwidth host $latest: ..."
+
+		rate=
+		if [ -n "${upload_rate:-}" ]; then
+			rate="--bwlimit=$upload_rate"
+		fi
+		time rsync -qa --delete-before $rate "$build_branch".tar.xz "$rsync_location"/"$build_branch".tar.xz
+
+		echo "requesting pull of $latest: ..."
+		# Ask Coverity to pull from us.
+		time $CURL -sS \
+		  --form project="$coverity_project" \
+		  --form token="$coverity_token" \
+		  --form email="$coverity_email" \
+		  --form url="$public_url/$build_branch.tar.xz" \
+		  --form version="$latest" \
+		  --form description="$build_branch" \
+		  -o coverity-upload.log \
+		  https://scan.coverity.com/builds
+		echo ""
+	else
+		echo "upload $latest: ..."
+
+		# Push to Coverity.
+		url=$(echo "$coverity_project" | sed -e 's/ /+/g')
+		rate=
+		if [ -n "${upload_rate:-}" ]; then
+			rate="--limit-rate $upload_rate"
+		fi
+		time $CURL $rate -sS \
+		  --form token="$coverity_token" \
+		  --form email="$coverity_email" \
+		  --form file=@"$build_branch".tar.xz \
+		  --form version="$latest" \
+		  --form description="$build_branch" \
+		  -o coverity-upload.log \
+		  'https://scan.coverity.com/builds?project='"$url"
+		echo ""
+	fi
+
+	# Two known results:
+	#
+	# Build successfully submitted
+	#
+	# -or-
+	#
+	# The build submission quota for this project has been reached. Next submission permitted on or after 2019-Oct-03 11:57 PM UTC
+
+	if grep -q 'Build successfully submitted' coverity-upload.log ; then
+		cat coverity-upload.log >&2
+	elif grep -q 'The build submission quota for this project has been reached' coverity-upload.log ; then
+		cat coverity-upload.log >&2
+		WHEN="$(cat coverity-upload.log | awk -F 'on or after ' '{print $2}' | awk -F'[ -]' '{print $2" "$3" "$1" "$4" "$5" "$6}')"
+		date --date="$WHEN"
+		AT=$(date --date="$WHEN" +'%Y%m%d%H%M')
+		echo "$0 --scheduled 2>&1 | $coverity_cron_pipe" | at -t "$AT"
+		exit 1
+	else
+		echo "Unexpected upload report:" >&2
+		cat coverity-upload.log >&2
+
+		AT=$(date --date="+1 hour" +'%Y%m%d%H%M')
+		echo "$0 --scheduled 2>&1 | $coverity_cron_pipe" | at -t "$AT"
+		exit 1
+	fi
+
+	# mark as uploaded
+	echo "$latest" > "$CACHE"/upload.stamp.new
+	mv "$CACHE"/upload.stamp.new "$CACHE"/upload.stamp
+}
+
+coverity_prepare
+coverity_build
+coverity_collect
+coverity_upload

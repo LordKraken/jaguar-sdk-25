@@ -1,0 +1,19 @@
+{
+	"working_dir": "C:/Projects/Jaguar/roms/dev",
+	
+	"variants":
+	[
+		{
+			"name": "Build",
+			"shell_cmd": "wt.exe wsl --cd /mnt/c/Projects/Jaguar/dev/jaguar-sdk-25/ --exec bash build.sh make ${project_path} ${project_base_name}",
+		},
+		{
+			"name": "Run",
+			"shell_cmd": "C:/Projects/Jaguar/emu/BigPEmu_v118/BigPEmu.exe ${project_base_name}.cof",
+		},
+		{
+			"name": "Clean",
+			"shell_cmd": "wt.exe wsl --cd /mnt/c/Projects/Jaguar/dev/jaguar-sdk-25/ --exec bash build.sh clean ${project_path}",
+		}
+	]
+}
