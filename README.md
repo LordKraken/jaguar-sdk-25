@@ -3,6 +3,7 @@
 The **Jaguar SDK 25** is an updated version of the Jaguar development tools released by **Cubanismo**, which was already itself a custom version of the original jaguar SDK released by **Belboz** in 2009. Both SDKs can be found here:
 
 https://github.com/cubanismo/jaguar-sdk
+
 https://www.hillsoftware.com/files/atari/jaguar/
 
 All changes and improvements made by Cubanismo have been preserved (check README.md in the legacy/docs folder for a better view of these changes) as the design goal behind the 2025 version is to propose a simpler development environment based on Sublime Text and WSL for Windows. The SDK still works with regular Linux version though.
