@@ -520,6 +520,242 @@
 	"buffers":
 	[
 		{
+			"file": "Makefile",
+			"settings":
+			{
+				"buffer_size": 3039,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					16,
+					1,
+					"paste",
+					null,
+					"AgAAAD0HAAAAAAAAWAcAAAAAAAAAAAAAWAcAAAAAAABYBwAAAAAAAJ0AAAAzZHMvZ2xvYmUvYzEuY3J5IDNkcy9nbG9iZS9jMi5jcnkgM2RzL2dsb2JlL2MzLmNyeSAzZHMvZ2xvYmUvdTEuY3J5IDNkcy9nbG9iZS91Mi5jcnkgXAoJM2RzL2dsb2JlL3UzLmNyeSAzZHMvZ2xvYmUvbDEuY3J5IDNkcy9nbG9iZS9sMi5jcnkgM2RzL2dsb2JlL2wzLmNyeSBc",
+					"AQAAAAAAAAABAAAAPQcAAAAAAADaBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					17,
+					1,
+					"insert",
+					{
+						"characters": " \\"
+					},
+					"AgAAAFgHAAAAAAAAWQcAAAAAAAAAAAAAWQcAAAAAAABaBwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWAcAAAAAAABYBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					18,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAFoHAAAAAAAAWwcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWgcAAAAAAABaBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					19,
+					1,
+					"paste",
+					null,
+					"AQAAAFsHAAAAAAAAdgcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWwcAAAAAAABbBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					21,
+					1,
+					"insert",
+					{
+						"characters": "\t"
+					},
+					"AQAAAFsHAAAAAAAAXAcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWwcAAAAAAABbBwAAAAAAAAAAAAAAAAAA"
+				],
+				[
+					33,
+					1,
+					"paste",
+					null,
+					"AgAAAGsHAAAAAAAAbwcAAAAAAAAAAAAAbwcAAAAAAABvBwAAAAAAAAUAAABnbG9iZQ",
+					"AQAAAAAAAAABAAAAawcAAAAAAABwBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					36,
+					4,
+					"cut",
+					null,
+					"BAAAAHcHAAAAAAAAdwcAAAAAAABpAAAACTNkcy9zaGlwL2JhY2szLmNyeSAzZHMvc2hpcC9ib3R0b20uY3J5IDNkcy9zaGlwL2JvdHRvbWZyLmNyeSAzZHMvc2hpcC9lbmdib3QuY3J5IDNkcy9zaGlwL2VuZ2ZybnQuY3J5IFwKdwcAAAAAAAB3BwAAAAAAAGcAAAAJM2RzL3NoaXAvZW5nc2lkZS5jcnkgM2RzL3NoaXAvZW5ndG9wLmNyeSAzZHMvc2hpcC9maW4uY3J5IDNkcy9zaGlwL2ZpbnNpZGUuY3J5IDNkcy9zaGlwL2d1bmJhY2suY3J5IFwKdwcAAAAAAAB3BwAAAAAAAGUAAAAJM2RzL3NoaXAvZ3Vuc2lkZS5jcnkgM2RzL3NoaXAvZ3VudG9wLmNyeSAzZHMvc2hpcC9ob29kLmNyeSAzZHMvc2hpcC9yb29mLmNyeSAzZHMvc2hpcC9ydGZyb250LmNyeSBcCncHAAAAAAAAdwcAAAAAAABlAAAACTNkcy9zaGlwL3J0c2lkZS5jcnkgM2RzL3NoaXAvd2luZnJudC5jcnkgM2RzL3NoaXAvd2luZy5jcnkgM2RzL3NoaXAvd2luZ3NpZGUuY3J5IDNkcy9zaGlwL3dpbnJ0LmNyeQo",
+					"AQAAAAAAAAABAAAAnAcAAAAAAACcBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					53,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAHcIAAAAAAAAeAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdwgAAAAAAAB3CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					54,
+					1,
+					"paste",
+					null,
+					"AQAAAHgIAAAAAAAA8wgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAeAgAAAAAAAB4CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					55,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAPMIAAAAAAAA9AgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA8wgAAAAAAADzCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					63,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAJ8IAAAAAAAAoAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAnwgAAAAAAACfCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					64,
+					1,
+					"paste",
+					null,
+					"AQAAAKAIAAAAAAAAuwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAoAgAAAAAAACgCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					74,
+					1,
+					"paste",
+					null,
+					"AgAAAK8IAAAAAAAAswgAAAAAAAAAAAAAswgAAAAAAACzCAAAAAAAAAUAAABnbG9iZQ",
+					"AQAAAAAAAAABAAAArwgAAAAAAAC0CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					95,
+					1,
+					"insert",
+					{
+						"characters": " \\"
+					},
+					"AgAAAA4JAAAAAAAADwkAAAAAAAAAAAAADwkAAAAAAAAQCQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAADgkAAAAAAAAOCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					96,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAABAJAAAAAAAAEQkAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAEAkAAAAAAAAQCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					97,
+					1,
+					"paste",
+					null,
+					"AQAAABEJAAAAAAAAMwkAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAEQkAAAAAAAARCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					99,
+					1,
+					"insert",
+					{
+						"characters": "\t\t"
+					},
+					"AgAAABEJAAAAAAAAEgkAAAAAAAAAAAAAEgkAAAAAAAATCQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAEQkAAAAAAAARCQAAAAAAAAAAAAAAAAAA"
+				],
+				[
+					102,
+					1,
+					"cut",
+					null,
+					"AQAAADYJAAAAAAAANgkAAAAAAACsAwAACkZJWERBVEEgPSAtaWkgM2RzL2dsb2JlL2MxLmNyeSBfYzEgLWlpIDNkcy9nbG9iZS9jMi5jcnkgX2MyIC1paSAzZHMvZ2xvYmUvYzMuY3J5IF9jMyBcCgktaWkgM2RzL2dsb2JlL3UxLmNyeSBfdTEgLWlpIDNkcy9nbG9iZS91Mi5jcnkgX3UyIC1paSAzZHMvZ2xvYmUvdTMuY3J5IF91MyBcCgktaWkgM2RzL2dsb2JlL2wxLmNyeSBfbDEgLWlpIDNkcy9nbG9iZS9sMi5jcnkgX2wyIC1paSAzZHMvZ2xvYmUvbDMuY3J5IF9sMyBcCgktaWkgM2RzL3NoaXAvYmFjazMuY3J5IF9iYWNrMyAtaWkgM2RzL3NoaXAvYm90dG9tLmNyeSBfYm90dG9tIC1paSAzZHMvc2hpcC9ib3R0b21mci5jcnkgX2JvdHRvbWZyIFwKCS1paSAzZHMvc2hpcC9lbmdib3QuY3J5IF9lbmdib3QgLWlpIDNkcy9zaGlwL2VuZ2ZybnQuY3J5IF9lbmdmcm50IC1paSAzZHMvc2hpcC9lbmdzaWRlLmNyeSBfZW5nc2lkZSBcCgktaWkgM2RzL3NoaXAvZW5ndG9wLmNyeSBfZW5ndG9wIC1paSAzZHMvc2hpcC9maW4uY3J5IF9maW4gLWlpIDNkcy9zaGlwL2ZpbnNpZGUuY3J5IF9maW5zaWRlIFwKCS1paSAzZHMvc2hpcC9ndW5iYWNrLmNyeSBfZ3VuYmFjayAtaWkgM2RzL3NoaXAvZ3Vuc2lkZS5jcnkgX2d1bnNpZGUgLWlpIDNkcy9zaGlwL2d1bnRvcC5jcnkgX2d1bnRvcCBcCgktaWkgM2RzL3NoaXAvaG9vZC5jcnkgX2hvb2QgLWlpIDNkcy9zaGlwL3Jvb2YuY3J5IF9yb29mIC1paSAzZHMvc2hpcC9ydGZyb250LmNyeSBfcnRmcm9udCBcCgktaWkgM2RzL3NoaXAvcnRzaWRlLmNyeSBfcnRzaWRlIC1paSAzZHMvc2hpcC93aW5mcm50LmNyeSBfd2luZnJudCAtaWkgM2RzL3NoaXAvd2luZy5jcnkgX3dpbmcgXAoJLWlpIDNkcy9zaGlwL3dpbmdzaWRlLmNyeSBfd2luZ3NpZGUgLWlpIDNkcy9zaGlwL3dpbnJ0LmNyeSBfd2lucnQgXAoJLWlpICQoRk9OVERJUikvY2xyNngxMi5qZnQgX3VzZWZudA",
+					"AQAAAAAAAAABAAAA4gwAAAAAAAA2CQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					109,
+					1,
+					"cut",
+					null,
+					"AQAAADcJAAAAAAAANwkAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAANwkAAAAAAAA3CQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					125,
+					1,
+					"insert",
+					{
+						"characters": "#"
+					},
+					"AQAAAHgIAAAAAAAAeQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAeAgAAAAAAAB4CAAAAAAAAAAAAAAAAAAA"
+				],
+				[
+					128,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line.sublime-macro"
+					},
+					"AQAAALsIAAAAAAAAvAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAuwgAAAAAAAC7CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					129,
+					1,
+					"paste",
+					null,
+					"AQAAALwIAAAAAAAA5ggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvAgAAAAAAAC8CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					130,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAOYIAAAAAAAA5wgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5ggAAAAAAADmCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					134,
+					1,
+					"paste",
+					null,
+					"AQAAAOcIAAAAAAAABgkAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5wgAAAAAAADnCAAAAAAAAP///////+9/"
+				],
+				[
+					140,
+					1,
+					"paste",
+					null,
+					"AgAAALwIAAAAAAAA9QgAAAAAAAAAAAAA9QgAAAAAAAD1CAAAAAAAAEoAAABDUllfRklMRVMgPSAkKHNoZWxsIGxzIC1TIDNkcy9nbG9iZS8qLmNyeSkgJChzaGVsbCBscyAtUyAzZHMvZ2xvYmUvKi5jcnkpIA",
+					"AQAAAAAAAAABAAAABgkAAAAAAAC8CAAAAAAAAAAAAAAAAAAA"
+				]
+			]
+		},
+		{
 			"file": "demo.c",
 			"settings":
 			{
@@ -571,14 +807,21 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Projects/Jaguar/dev/jaguar-sdk/dev/3d"
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/dev/3d"
 	],
 	"file_history":
 	[
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/legacy/docs/README.md",
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/README.md",
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/dev/3d/Makefile",
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/build.sh",
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/maketools.sh",
+		"/C/Users/lordk/AppData/Roaming/Sublime Text/Packages/User/Jaguar SDK.sublime-build",
+		"/C/Projects/Jaguar/dev/jaguar-sdk-25/tools/sublime/Jaguar SDK.sublime-build",
+		"/C/Projects/Jaguar/dev/tools/Jaguar SDK.sublime-build",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/legacy/docs/README.md",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/README.md",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/tools/sublime/Jaguar SDK.sublime-build",
-		"/C/Users/lordk/AppData/Roaming/Sublime Text/Packages/User/Jaguar SDK.sublime-build",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/compile.sh",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/_legacy/docs/README.md",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/examples/3d/demo.sublime-project",
@@ -591,7 +834,6 @@
 		"/C/Projects/Jaguar/dev/jaguar-sdk/jag3d/Makefile",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/tools/build/jagdefs.mk",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/tools/build/jagrules.mk",
-		"/C/Projects/Jaguar/dev/tools/Jaguar SDK.sublime-build",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/jaguar/examples/dhrystone-gpu/agpudhry.c",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/jaguar/examples/dhrystone-gpu/m68kdhry.c",
 		"/C/Projects/Jaguar/dev/jaguar-sdk/jaguar/examples/dhrystone-gpu/Makefile",
@@ -696,17 +938,11 @@
 		"/C/Projects/Lynx/Dev/red2/res/mod/game_sfx.asm",
 		"/C/Projects/Lynx/Dev/red2/res/mod/world3.asm",
 		"/C/Projects/Lynx/Dev/red2/src/level.h",
-		"/C/Projects/Lynx/Dev/bowl/res/mod/intro_funk_session.asm",
-		"/C/Projects/Lynx/Dev/lynks/lynks/sound.h",
-		"/C/Projects/Lynx/Dev/red2/src/entity.h",
-		"/C/Projects/Lynx/Dev/red2/res/pal/palette_story_2.pal",
-		"/C/Projects/Lynx/Dev/red2/src/decl/palette_story2.h",
-		"/C/Projects/Lynx/Dev/red2/src/decl/levelgen.h",
-		"/C/Projects/Lynx/Dev/lynks/lynks/physic.h"
+		"/C/Projects/Lynx/Dev/bowl/res/mod/intro_funk_session.asm"
 	],
 	"find":
 	{
-		"height": 28.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -721,6 +957,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"linux",
 			"jagua",
 			"BASEASMFLAGS",
 			"back",
@@ -847,8 +1084,7 @@
 			"SetPlayerPosition",
 			"PLAYER_STATE_UNSET",
 			"SetPlayerActive",
-			"SetPlayerReady",
-			"_stateTimer"
+			"SetPlayerReady"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -989,6 +1225,37 @@
 			[
 				{
 					"buffer": 0,
+					"file": "Makefile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3039,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2495,
+								2495
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Makefile/Makefile.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1084.66666667,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
 					"file": "demo.c",
 					"selected": true,
 					"semi_transient": false,
@@ -1001,8 +1268,8 @@
 						"selection":
 						[
 							[
-								220,
-								220
+								261,
+								261
 							]
 						],
 						"settings":

@@ -52,17 +52,17 @@ LIBOBJS = $(LIB)/alloc.o $(LIB)/clock.o $(LIB)/ctype.o $(LIB)/font.o \
 SRCOBJS = asm/miscasm.o asm/trig.o asm/mkmat.o \
 	asm/wfrend.o asm/gourrend.o asm/gourphr.o \
 	asm/texrend.o asm/flattex.o asm/gstex.o \
+	game.o \
 	demo.o 
 
-MODELS = 3ds/globe/globe.o 3ds/ship/ship.o \
-	models/knight.o models/robot.o models/torus.o 
+MODELS = 3ds/globe/globe.o \
+	3ds/ship/ship.o \
+	models/knight.o \
+	models/robot.o \
+	models/torus.o 
 
-TEXTURES = 3ds/globe/c1.cry 3ds/globe/c2.cry 3ds/globe/c3.cry 3ds/globe/u1.cry 3ds/globe/u2.cry \
-	3ds/globe/u3.cry 3ds/globe/l1.cry 3ds/globe/l2.cry 3ds/globe/l3.cry \
-	3ds/ship/back3.cry 3ds/ship/bottom.cry 3ds/ship/bottomfr.cry 3ds/ship/engbot.cry 3ds/ship/engfrnt.cry \
-	3ds/ship/engside.cry 3ds/ship/engtop.cry 3ds/ship/fin.cry 3ds/ship/finside.cry 3ds/ship/gunback.cry \
-	3ds/ship/gunside.cry 3ds/ship/guntop.cry 3ds/ship/hood.cry 3ds/ship/roof.cry 3ds/ship/rtfront.cry \
-	3ds/ship/rtside.cry 3ds/ship/winfrnt.cry 3ds/ship/wing.cry 3ds/ship/wingside.cry 3ds/ship/winrt.cry
+TEXTURES = $(wildcard 3ds/globe/*.cry) \
+	$(wildcard 3ds/ship/*.cry)
 
 GENERATED += $(TEXTURES)
 
@@ -71,21 +71,14 @@ PROGS = demo.cof
 #############################################################################
 # the textures are arranged in decreasing order of size
 #############################################################################
-FIXDATA = -ii 3ds/globe/c1.cry _c1 -ii 3ds/globe/c2.cry _c2 -ii 3ds/globe/c3.cry _c3 \
-	-ii 3ds/globe/u1.cry _u1 -ii 3ds/globe/u2.cry _u2 -ii 3ds/globe/u3.cry _u3 \
-	-ii 3ds/globe/l1.cry _l1 -ii 3ds/globe/l2.cry _l2 -ii 3ds/globe/l3.cry _l3 \
-	-ii 3ds/ship/back3.cry _back3 -ii 3ds/ship/bottom.cry _bottom -ii 3ds/ship/bottomfr.cry _bottomfr \
-	-ii 3ds/ship/engbot.cry _engbot -ii 3ds/ship/engfrnt.cry _engfrnt -ii 3ds/ship/engside.cry _engside \
-	-ii 3ds/ship/engtop.cry _engtop -ii 3ds/ship/fin.cry _fin -ii 3ds/ship/finside.cry _finside \
-	-ii 3ds/ship/gunback.cry _gunback -ii 3ds/ship/gunside.cry _gunside -ii 3ds/ship/guntop.cry _guntop \
-	-ii 3ds/ship/hood.cry _hood -ii 3ds/ship/roof.cry _roof -ii 3ds/ship/rtfront.cry _rtfront \
-	-ii 3ds/ship/rtside.cry _rtside -ii 3ds/ship/winfrnt.cry _winfrnt -ii 3ds/ship/wing.cry _wing \
-	-ii 3ds/ship/wingside.cry _wingside -ii 3ds/ship/winrt.cry _winrt \
-	-ii $(FONTDIR)/clr6x12.jft _usefnt
+#CRY_FILES = $(wildcard 3ds/globe/*.cry) $(wildcard 3ds/ship/*.cry)
+CRY_FILES = $(shell ls -S 3ds/globe/*.cry 3ds/ship/*.cry)
+FIXDATA = $(foreach file, $(CRY_FILES), -ii $(file) _$(basename $(notdir $(file)))) \
+		-ii $(FONTDIR)/clr6x12.jft _usefnt
 
 OBJS = $(CRT0) $(SRCOBJS) $(MODELS) $(LIBOBJS)
 
-demo.cof: $(OBJS) $(TEXTURES)
+$(PROGS): $(OBJS) $(TEXTURES)
 	$(LINK) $(LINKFLAGS) -o demo.cof $(OBJS) $(FIXDATA)
 
 #demo.cof: $(OBJS) $(TEXTURES)
