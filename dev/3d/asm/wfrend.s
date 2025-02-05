@@ -61,8 +61,8 @@ _wfcode:
 	.dc.l	startblit, endblit-startblit
 
 	.gpu
-	.include 	"inc/globlreg.inc"
-	.include	"inc/trapregs.inc"
+	.include 	"globlreg.inc"
+	.include	"trapregs.inc"
 
 	.org	G_RAM
 
@@ -144,18 +144,18 @@ skipface:
 ;***********************************************************************
 ; Polygon loading code goes here
 ;***********************************************************************
-	.include	"inc/load.inc"
+	.include	"load.inc"
 
 ;***********************************************************************
 ; Clipping and perspective transformation code goes here
 ;***********************************************************************
-	.include	"inc/clip.inc"
+	.include	"clip.inc"
 
 ;******************************************************************
 ; here's where we render the polygon
 ;******************************************************************
 	movei	#curmaterial,altpgon
-	.include "inc/wfdraw.inc"
+	.include "wfdraw.inc"
 
 	movei	#triloop,return		; main loop expects its address in "return"
 	jump	(return)		; branch to the main loop
@@ -181,7 +181,7 @@ gpudone:
 	nop
 
 
-	.include	"inc/clipsubs.inc"
+	.include	"clipsubs.inc"
 
 	.equrundef	thisplane
 
@@ -263,7 +263,7 @@ _gpubuf = 	_GPUP2 + (4*SIZEOF_POLYGON)
 ;
 ; include the initialization code
 ;
-	.include	"inc/init.inc"
+	.include	"init.inc"
 
 	.long
 endblit:

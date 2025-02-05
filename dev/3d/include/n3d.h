@@ -1,3 +1,6 @@
+#ifndef _JAGUAR_SDK_25_N3D_
+#define _JAGUAR_SDK_25_N3D_
+
 /*
  * Data structures for new 3D renderer
  */
@@ -168,3 +171,5 @@ typedef struct object {
 	struct object *children;	/* pointer to lower level objects */
 	Animation *animation;
 } N3DObject;
+
+#endif

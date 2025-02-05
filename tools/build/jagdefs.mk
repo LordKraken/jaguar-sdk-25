@@ -20,7 +20,7 @@ LINKALIGN ?= $(ALIGN)
 #  +o2: Word branches to short
 ASMOPTS ?= +o0 +o1 +o2
 
-BASEASMFLAGS = -fb -g2 -r$(ASMPAD)
+BASEASMFLAGS = -fb -g2 -r$(ASMPAD) 
 # Link flags:
 #  -e  - Output using COF file format
 #  -g2  - Output source level debugging
@@ -59,7 +59,7 @@ endif
 
 # Use newer gcc to build m68k C files.
 CFLAGS ?= -O2
-CINCLUDES = -I$(JAGSDK)/sdk/include
+CINCLUDES = -I$(JAGSDK)/sdk/include 
 CDEFS = -DJAGUAR
 CC = m68k-aout-gcc
 

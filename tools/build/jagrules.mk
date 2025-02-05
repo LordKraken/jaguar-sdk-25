@@ -2,10 +2,6 @@
 #       Default Rules
 #====================================================================
 
-# Define ANSI color codes
-RED=\033[0;31m	# Red
-NC=\033[0m		# No Color
-
 all: $(PROGS)
 
 .SUFFIXES: .o .s .c

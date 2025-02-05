@@ -1,0 +1,21 @@
+#ifndef _MODEL_DEF_H_
+#define _MODEL_DEF_H_
+
+//*****************************************************************************
+
+#include "n3d.h"
+
+//*****************************************************************************
+/* A model consists of:
+ * (1) a pointer for the data for the model
+ * (2) starting X,Y,Z coordinates for the model
+ */
+typedef struct Model {
+	N3DObjdata* data;
+	short initx;
+	short inity;
+	short initz;
+	short reserved;		/* pads structure to a longword boundary */
+} SModel;
+
+#endif
