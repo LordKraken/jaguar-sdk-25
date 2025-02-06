@@ -46,33 +46,26 @@ extern short DISPBUF0[], DISPBUF1[];
  ****************************************************************/
 
 /* object list for first screen */
-union olist buf1_olist[3] =
+union olist buf1_olist[] =
 {
-	{{OL_BITMAP,	/* type */
-	 //20+(320-OBJWIDTH)/2, 20+(240-OBJHEIGHT),		/* x, y */
-	0, 0,
-	 0L,		/* link */
-	 DATA1,		/* data */
-	 OBJHEIGHT, OBJWIDTH*3/4, OBJWIDTH/4,		/* height, dwidth, iwidth */
-	 4, 3, 0, OL_TRANS, 0,	/* depth, pitch, index, flags, firstpix */
-	 OL_SCALE_DOUBLE,OL_SCALE_DOUBLE,0}},		/* scaling stuff */
+	{{	OL_BITMAP,			/* type */
+		0, 0,					/* x, y */
+	 	0L,					/* link */
+	 	DATA1,				/* data */
+	 	OBJHEIGHT, 			/* height */
+	 	OBJWIDTH * 3 / 4,	/* dwidth */ 
+	 	OBJWIDTH / 4,		/* iwidth */
+	 	4, 3, 0, 			/* depth, pitch, index */
+	 	OL_TRANS, 0,		/* flags, firstpix */
+	 	OL_SCALE_DOUBLE,	/* scaling stuff */
+	 	OL_SCALE_DOUBLE, 
+	 	0}},		
 
-
-	{{OL_BITMAP,	/* type */
-	 //20+(320-OBJWIDTH)/2, 20+(240-OBJHEIGHT),		/* x, y */
-	40, 40,
-	 0L,		/* link */
-	 DATA1,		/* data */
-	 OBJHEIGHT, OBJWIDTH*3/4, OBJWIDTH/4,		/* height, dwidth, iwidth */
-	 4, 3, 0, OL_TRANS, 0,	/* depth, pitch, index, flags, firstpix */
-	 OL_SCALE_DOUBLE,OL_SCALE_DOUBLE,0}},		/* scaling stuff */
-
-
-	{{OL_STOP}},
+	{{	OL_STOP}},
 };
 
 /* object list for second screen */
-union olist buf2_olist[3] =
+union olist buf2_olist[] =
 {
 	{{OL_BITMAP,	/* type */
 	 //20+(320-OBJWIDTH)/2, 20+(240-OBJHEIGHT),		/* x, y */
@@ -83,31 +76,20 @@ union olist buf2_olist[3] =
 	 4, 3, 0, OL_TRANS, 0,	/* depth, pitch, index, flags, firstpix */
 	 OL_SCALE_DOUBLE,OL_SCALE_DOUBLE,0}},		/* scaling stuff */
 
-
-	{{OL_BITMAP,	/* type */
-	 //20+(320-OBJWIDTH)/2, 20+(240-OBJHEIGHT),		/* x, y */
-	40, 40,
-	 0L,		/* link */
-	 DATA1,		/* data */
-	 OBJHEIGHT, OBJWIDTH*3/4, OBJWIDTH/4,		/* height, dwidth, iwidth */
-	 4, 3, 0, OL_TRANS, 0,	/* depth, pitch, index, flags, firstpix */
-	 OL_SCALE_DOUBLE,OL_SCALE_DOUBLE,0}},		/* scaling stuff */
-
-
 	{{OL_STOP}}
 };
 
 /* Bitmaps for the two screens */
 Bitmap scrn1 = {
 	CAMWIDTH, CAMHEIGHT,
-	PIXEL16|PITCH3|ZOFFS2|WIDFLAG,
-	(void *)(DATA1 + ((OBJWIDTH-CAMWIDTH)*3L) + (((OBJHEIGHT-CAMHEIGHT)/2)*LINELEN) ),
+	PIXEL16 | PITCH3 | ZOFFS2 | WIDFLAG,
+	(void*) (DATA1 + ((OBJWIDTH - CAMWIDTH) * 3L) + (((OBJHEIGHT - CAMHEIGHT) / 2) * LINELEN)),
 };
 
 /* initial data for camera corresponding to second screen buffer */
 Bitmap scrn2 = {
 	CAMWIDTH, CAMHEIGHT,
-	PIXEL16|PITCH3|ZOFFS1|WIDFLAG,
-	(void *)(DATA2 + ((OBJWIDTH-CAMWIDTH)*3) + (((OBJHEIGHT-CAMHEIGHT)/2)*LINELEN) ),
+	PIXEL16 | PITCH3 | ZOFFS1 | WIDFLAG,
+	(void*) (DATA2 + ((OBJWIDTH - CAMWIDTH) * 3L) + (((OBJHEIGHT - CAMHEIGHT) / 2) * LINELEN)),
 };
 

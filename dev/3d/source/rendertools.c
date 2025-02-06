@@ -1,11 +1,15 @@
 #include "models.h"
 
-#include "n3d.h"
+#include "decl/renderdef.h"
+#include "renderer.h"
 
 //*****************************************************************************
 
-/* flag for current texture state */
-int texturestate;
+void N3DToolsNextRenderer() {
+	ERendererType type = g_renderer->type;
+	type = (type + 1) % RENDERER_TYPE_COUNT;
+	N3DLoad(type);
+}
 
 //*****************************************************************************
 /* Adjust all intensities in a texture so that they are
@@ -21,7 +25,7 @@ int texturestate;
  * textures to shaded ones and then back again, calling this
  * function each time we switch.
  */				
-void RenderToolsFixTexture(Bitmap* texture) {
+void N3DToolsFixTexture(Bitmap* texture) {
 	long *lsrc;
 	long numpixs;
 	long i;
@@ -44,20 +48,23 @@ void RenderToolsFixTexture(Bitmap* texture) {
  * call fixtexture() on every texture in every
  * model.
  */
-void RenderToolsFixTextures(int newrender) {
+
+int _texflag = 0;
+
+void N3DToolsFixTextures(int texflag) {
 	int i, j;
 	N3DObjdata* curobj;
 	Bitmap* map;
 
-	if (texturestate != newrender) {
+	if (_texflag != texflag) {
 		for (i = 0; i < g_modelsCount; i++) {
 			curobj = g_models[i].data;
 			for (j = 0; j < curobj->nummaterials; j++) {
 				map = curobj->materials[j].tmap;
 				if (map)
-					RenderToolsFixTexture(map);
+					N3DToolsFixTexture(map);
 			}
 		}
-		texturestate = newrender;
+		_texflag = texflag;
 	}
 }

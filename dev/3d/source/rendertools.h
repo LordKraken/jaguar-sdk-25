@@ -3,13 +3,8 @@
 
 //*****************************************************************************
 
-extern int texturestate;
-
-//*****************************************************************************
-
-extern void InitRenderTools();
-extern void N3DRTSetMode();
-extern void RenderToolsFixTexture();
-extern void RenderToolsFixTextures();
+extern void N3DToolsNextRenderer();
+extern void N3DToolsFixTexture();
+extern void N3DToolsFixTextures();
 
 #endif

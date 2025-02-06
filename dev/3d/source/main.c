@@ -21,31 +21,6 @@
  *	External GPU references					*
  ****************************************************************/
 
-extern long wfcode[], 
-	gourcode[], 
-	gourphrcode[],
-	texcode[], 
-	flattexcode[], 
-	gstexcode[];
-
-extern void wfenter(), 
-	gourenter(), 
-	gourphrenter(),
-	texenter(), 
-	flattexenter(), 
-	gstexenter();
-
-/* renderers supported */
-SRenderer rend[] = {
-	{"Wire Frames", wfcode, wfenter, 0},
-	{"Gouraud Only", gourcode, gourenter, 0},
-	{"Phrase Mode Gouraud", gourphrcode, gourphrenter, 0},
-	{"Unshaded Textures", texcode, texenter, 0},
-	{"Flat Shaded Textures", flattexcode, flattexenter, 0},
-	{"Gouraud Shaded Textures", gstexcode, gstexenter, 1},
-};
-#define maxrenderer (sizeof(rend)/sizeof(SRenderer))
-
 /* storage for packed object lists */
 int packed_olist1[160];
 int packed_olist2[160];
@@ -65,7 +40,6 @@ int main() {
 	long curframe;			/* current frame counter */
 	long framespersecond;		/* frames per second counter */
 	long time;			/* elapsed time */
-	int currender;			/* current renderer in use (index into table) */
 	int curmodel;			/* current model in use (index into table) */
 	char buf[256];			/* scratch buffer for sprintf */
 
@@ -84,7 +58,6 @@ int main() {
 
 
 	drawbuf = 0;			/* draw on buffer 1, while displaying buffer 2 */
-	currender = 0;			/* initial render package to use */
 	curmodel = 0;			/* initial model to draw */
 
 	/* initialize the test object */
@@ -113,14 +86,6 @@ int main() {
 	curframe = _timestamp;			/* timestamp is updated every vblank, and is elapsed time in 300ths of a second */
 	framespersecond = 1;
 
-	/* initially textures are unshaded */
-	texturestate = 0;
-
-
-
-	/* set up the textures for the first renderer */
-	RenderToolsFixTextures(rend[currender].texflag);
-
 	/* loop forever */
 	for(;;) {
 		/* select bitmap for drawing */
@@ -141,7 +106,7 @@ int main() {
 		 */
 		time = clock();
 
-		N3DRender(curwindow, &testobj, &cammatrix, &rend[currender]);
+		N3DRender(curwindow, &testobj, &cammatrix);
 
 		time = clock() - time;
 
@@ -231,17 +196,20 @@ int main() {
 		}
 
 		if (shotbuts & KEY_H) {
+			N3DToolsNextRenderer();
+			/*
 			currender++;
 			if (currender >= maxrenderer)
 				currender = 0;
-			RenderToolsFixTextures(rend[currender].texflag);
+				*/
 		}
 
 		if (shotbuts & KEY_S) {
+			/*
 			if (currender == 0)
 				currender = maxrenderer;
 			currender--;
-			RenderToolsFixTextures(rend[currender].texflag);
+			*/
 		}
 
 		/* display the buffer we just drew */

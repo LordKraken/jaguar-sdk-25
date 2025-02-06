@@ -2,10 +2,12 @@
 
 #include "decl/globals.h"
 #include "decl/lights.h"
+#include "decl/renderdef.h"
 
 #include "blit.h"
 #include "n3d.h"
 #include "n3dintern.h"
+#include "rendertools.h"
 
 //*****************************************************************************
 
@@ -16,13 +18,47 @@ extern void GPUrun(void (*)());			/* runs a GPU program */
 
 //*****************************************************************************
 
-SRenderer* g_currentRenderer = 0;
+// Rendering code (asm)
+extern long wfcode[], 
+	gourcode[], 
+	gourphrcode[],
+	texcode[], 
+	flattexcode[], 
+	gstexcode[];
+
+// Rendering functions (asm)
+extern void wfenter(), 
+	gourenter(), 
+	gourphrenter(),
+	texenter(), 
+	flattexenter(), 
+	gstexenter();
+
+// Renderers supported
+SRenderer _renderers[] = {
+	{ RENDERER_TYPE_WIREFRAME, wfcode, wfenter, 0 },
+	{ RENDERER_TYPE_GOURAUD, gourcode, gourenter, 0 },
+	{ RENDERER_TYPE_GOURAUD_PHRASE, gourphrcode, gourphrenter, 0 },
+	{ RENDERER_TYPE_TEXTURE_UNSHADED, texcode, texenter, 0 },
+	{ RENDERER_TYPE_TEXTURE_FLATSHADED, flattexcode, flattexenter, 0 },
+	{ RENDERER_TYPE_TEXTURE_GOURAUD, gstexcode, gstexenter, 1 },
+};
+
+const short _renderersCount = sizeof(_renderers) / sizeof(SRenderer);
+
+SRenderer* g_renderer = &_renderers[0];
+long* _gpucode = wfcode;
+void (*_gpuenter)() = wfenter;
 
 //*****************************************************************************
 
 void N3DInit(void) {
 	VIDon(0x6c1);						/* 0x6c1 = CRY; 0x6c7 = RGB */
 	VIDsync();							/* wait for video sync (paranoid code) */
+
+	N3DLoad(RENDERER_TYPE_WIREFRAME);
+N3DToolsFixTextures(g_renderer->texflag);
+
 }
 
 //*****************************************************************************
@@ -49,21 +85,39 @@ void N3DClear(Bitmap* buf) {
 }
 
 //*****************************************************************************
+
+void N3DLoad(ERendererType type) {
+	if (!g_renderer || g_renderer->type == type) {
+		return;
+	}
+
+	int i;
+	for (i = 0; i < _renderersCount; i++) {
+		if (_renderers[i].type == type) {
+			g_renderer = &_renderers[i];
+			_gpucode = g_renderer->gpucode;
+			_gpuenter = g_renderer->gpuenter;
+			N3DToolsFixTextures(g_renderer->texflag);
+			break;
+		}
+	}
+}
+
+//*****************************************************************************
 /* Render an object into a bitmap. The parameters are:
  *	window: the destination bitmap
  *	obj:	the N3D object to render
  *	cam:	the viewing matrix
  *	lmodel:	the lighting model
- *	rend:	the renderer to use (wireframe, gouraud, or texture mapped9
  */
 
 TPoint* tpoints;
 //TPoint tpoints2[1000];
 
-void N3DRender(Bitmap* window, N3DObject* obj, Matrix* cam, SRenderer* rend)
+void N3DRender(Bitmap* window, N3DObject* obj, Matrix* cam)
 {
 	// load GPU code
-	GPUload(rend->gpucode);
+	GPUload(_gpucode);
 
 	// allocate temporary storage
 	tpoints = malloc(sizeof(TPoint) * obj->data->numpoints);
@@ -76,7 +130,7 @@ void N3DRender(Bitmap* window, N3DObject* obj, Matrix* cam, SRenderer* rend)
 	params[5] = (long) (tpoints);
 	//params[5] = (long)(&tpoints2[0]);
 
-	GPUrun(rend->gpuenter);
+	GPUrun(_gpuenter);
 
 	free(tpoints);
 }
