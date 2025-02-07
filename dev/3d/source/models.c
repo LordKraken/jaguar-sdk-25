@@ -2,16 +2,16 @@
 
 //*****************************************************************************
 
-extern N3DObjdata globedata, cubedata, castledata, knightdata, robotdata, shipdata, torusdata;
+extern N3DObjdata globedata, cube2data, castledata, knightdata, robotdata, shipdata, radardata;
 
 N3DModel g_models[] = {
 	{ &globedata, 0, 0, 320, 0 },
-	{ &cubedata, 0, 0, 900, 0 },
+	{ &cube2data, 0, 0, 512, 0 },
 	{ &castledata, 0, 0, 8096, 0 },
 	{ &knightdata, 0, 0, 1800, 0 },
 	{ &robotdata, 0, 0, 2048, 0 },
 	{ &shipdata, 0, 0, 1024, 0 },
-	{ &torusdata, 0, 0, 1512, 0 },
+	{ &radardata, 0, 0, 512, 0 },
 };
 
 const int g_modelsCount = sizeof(g_models) / sizeof(N3DModel);

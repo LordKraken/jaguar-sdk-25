@@ -65,6 +65,8 @@ SRCOBJS = asm/miscasm.o asm/trig.o asm/mkmat.o \
 	source/renderer.o \
 	source/rendertools.o \
 	source/scene.o \
+	source/screen.o \
+	source/tools.o \
 	source/demo.o \
 	source/game.o \
 	source/main.o
@@ -73,7 +75,7 @@ MODELS = models/castle/castle.o \
 	models/globe/globe.o \
 	models/radar/radar.o \
 	models/ship/ship.o \
-	models/cube.o \
+	models/cube2/cube2.o \
 	models/knight.o \
 	models/robot.o \
 	models/torus.o 

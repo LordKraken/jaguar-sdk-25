@@ -18,6 +18,8 @@ typedef struct Angles {
 
 //*****************************************************************************
 
+extern int cos(int);
+extern int sin(int);
 extern void mkMatrix(Matrix*, N3DAngles*);
 
 #endif

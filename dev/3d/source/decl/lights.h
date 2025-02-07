@@ -8,7 +8,7 @@
 //*****************************************************************************
 
 Lightmodel g_lightModel = {
-	0x0000,				/* ambient illumination */
+	0x2222,				/* ambient illumination */
 	1,					/* number of lights */
 	{					/* Light definitions */
 	  { -0x24f3, -0x24f3, -0x24f3, 0x4000 },

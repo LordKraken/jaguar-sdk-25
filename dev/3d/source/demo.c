@@ -59,9 +59,9 @@ union olist buf1_olist[] =
 	 	OL_TRANS, 0,		/* flags, firstpix */
 	 	OL_SCALE_DOUBLE,	/* scaling stuff */
 	 	OL_SCALE_DOUBLE, 
-	 	0}},		
+	 	0 }},		
 
-	{{	OL_STOP}},
+	{{	OL_STOP }},
 };
 
 /* object list for second screen */

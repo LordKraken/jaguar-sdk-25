@@ -1,19 +1,19 @@
-#ifndef _GLOBALS_DEF_H_
-#define _GLOBALS_DEF_H_
+#include "tools.h"
 
 //*****************************************************************************
 
-#include "stdlib.h"
-#include "string.h"
+bool IsGamePaused() {
+	return false;
+}
 
 //*****************************************************************************
 
-#define bool 		int
-#define true 		1
-#define false 		0
+bool IsGameOver() {
+	return false;
+}
 
 //*****************************************************************************
 
-extern int sprintf(char*, const char*, ...);
-
-#endif
+bool IsLevelOver() {
+	return false;
+}

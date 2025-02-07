@@ -12,7 +12,10 @@ extern Matrix g_cameraMatrix;
 
 //*****************************************************************************
 
-extern void CameraInit();
-extern void CameraUpdate();
+extern void N3DCameraInit();
+extern void N3DCameraUpdate();
+extern void N3DCameraForward(short);
+extern void N3DCameraMove(short, short, short);
+extern void N3DCameraRotate(short, short, short);
 
 #endif
