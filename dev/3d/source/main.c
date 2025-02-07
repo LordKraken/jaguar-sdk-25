@@ -115,7 +115,7 @@ int main() {
 		//FNTstr(20, 0, rend[currender].name, curwindow->data, curwindow->blitflags, usefnt, 0x7fff, 0 );
 
 		sprintf(buf, "%d faces/%d fps", testobj.data->numpolys, (int)framespersecond);
-		FNTstr(20, 12, buf, curwindow->data, curwindow->blitflags, usefnt, 0x27ff, 0 );
+		FNTstr(20, 12, buf, curwindow->data, curwindow->blitflags, usefnt, 0x27ff, 0);
 
 		/* there are MHZ * 100 ticks in a second, and drawing 1 poly takes
 		 * (time/testobj.data->numpolys) ticks,
@@ -124,6 +124,8 @@ int main() {
 		//sprintf(buf, "%ld polys/sec", 100L * ( (MHZ * testobj.data->numpolys)/time) );
 		//FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0x27ff, 0 );
 
+		//sprintf(buf, "texcall %d  texrun %d  texruninternal %d  texmode %d", texfnInCount, texfnRunCount, texfnfixInCount, _lastTextureMode);
+		//FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
 
 		/* timing statistics */
 		//sprintf(buf, "%08lx draw time", time);

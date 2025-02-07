@@ -17,6 +17,8 @@ extern long _timestamp;					/* library count of number of 300ths of a second ela
 
 //*****************************************************************************
 
+extern const short _renderersCount;
+
 extern void N3DInit();
 extern void N3DLoad();
 extern void N3DClear();

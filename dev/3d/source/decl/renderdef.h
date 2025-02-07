@@ -3,15 +3,20 @@
 
 //*****************************************************************************
 
-typedef enum RendererType {
-	RENDERER_TYPE_WIREFRAME,
-	RENDERER_TYPE_GOURAUD,
-	RENDERER_TYPE_GOURAUD_PHRASE,
-	RENDERER_TYPE_TEXTURE_UNSHADED,
-	RENDERER_TYPE_TEXTURE_FLATSHADED,
-	RENDERER_TYPE_TEXTURE_GOURAUD,
-	RENDERER_TYPE_COUNT,
-} ERendererType;
+typedef enum TextureMode {
+	TEXTURE_MODE_NORMAL = 0,
+	TEXTURE_MODE_SHADING = 1,
+} ETextureMode;
+
+typedef enum RenderMode {
+	RENDER_MODE_WIREFRAME,
+	RENDER_MODE_GOURAUD,
+	RENDER_MODE_GOURAUD_PHRASE,
+	RENDER_MODE_TEXTURE_UNSHADED,
+	RENDER_MODE_TEXTURE_FLATSHADED,
+	RENDER_MODE_TEXTURE_GOURAUD,
+	RENDER_MODE_COUNT,
+} ERenderMode;
 
 //*****************************************************************************
 /* (1) The name of the renderer
@@ -20,11 +25,10 @@ typedef enum RendererType {
  * (4) Are textures in normal format (0) or relative to 0x80 (1)
  */
 typedef struct Renderer {
-	ERendererType type;
+	ERenderMode mode;
+	ETextureMode texmode;
 	long* gpucode;
 	void (*gpuenter)();
-	short texflag;
-	short null;							/* here for padding only */
 } SRenderer;
 
 //*****************************************************************************

@@ -5,6 +5,7 @@
 #include "decl/renderdef.h"
 
 #include "blit.h"
+#include "models.h"
 #include "n3d.h"
 #include "n3dintern.h"
 #include "rendertools.h"
@@ -36,29 +37,33 @@ extern void wfenter(),
 
 // Renderers supported
 SRenderer _renderers[] = {
-	{ RENDERER_TYPE_WIREFRAME, wfcode, wfenter, 0 },
-	{ RENDERER_TYPE_GOURAUD, gourcode, gourenter, 0 },
-	{ RENDERER_TYPE_GOURAUD_PHRASE, gourphrcode, gourphrenter, 0 },
-	{ RENDERER_TYPE_TEXTURE_UNSHADED, texcode, texenter, 0 },
-	{ RENDERER_TYPE_TEXTURE_FLATSHADED, flattexcode, flattexenter, 0 },
-	{ RENDERER_TYPE_TEXTURE_GOURAUD, gstexcode, gstexenter, 1 },
+	{ RENDER_MODE_WIREFRAME, TEXTURE_MODE_NORMAL, wfcode, wfenter },
+	{ RENDER_MODE_GOURAUD, TEXTURE_MODE_NORMAL, gourcode, gourenter },
+	{ RENDER_MODE_GOURAUD_PHRASE, TEXTURE_MODE_NORMAL, gourphrcode, gourphrenter },
+	{ RENDER_MODE_TEXTURE_UNSHADED, TEXTURE_MODE_NORMAL, texcode, texenter },
+	{ RENDER_MODE_TEXTURE_FLATSHADED, TEXTURE_MODE_NORMAL, flattexcode, flattexenter },
+	{ RENDER_MODE_TEXTURE_GOURAUD, TEXTURE_MODE_SHADING, gstexcode, gstexenter },
 };
-
 const short _renderersCount = sizeof(_renderers) / sizeof(SRenderer);
 
-SRenderer* g_renderer = &_renderers[0];
-long* _gpucode = wfcode;
-void (*_gpuenter)() = wfenter;
+// Current renderer and current rendering functions
+SRenderer* g_renderer;
+long* _gpucode;
+void (*_gpuenter)();
 
 //*****************************************************************************
 
 void N3DInit(void) {
+	N3DToolsInit();
+
+	g_renderer = 0;
+	_gpucode = 0;
+	_gpuenter = 0;
+
+	N3DLoad(RENDER_MODE_WIREFRAME);
+
 	VIDon(0x6c1);						/* 0x6c1 = CRY; 0x6c7 = RGB */
 	VIDsync();							/* wait for video sync (paranoid code) */
-
-	N3DLoad(RENDERER_TYPE_WIREFRAME);
-N3DToolsFixTextures(g_renderer->texflag);
-
 }
 
 //*****************************************************************************
@@ -86,18 +91,14 @@ void N3DClear(Bitmap* buf) {
 
 //*****************************************************************************
 
-void N3DLoad(ERendererType type) {
-	if (!g_renderer || g_renderer->type == type) {
-		return;
-	}
-
+void N3DLoad(ERenderMode mode) {
 	int i;
 	for (i = 0; i < _renderersCount; i++) {
-		if (_renderers[i].type == type) {
+		if (_renderers[i].mode == mode) {
 			g_renderer = &_renderers[i];
 			_gpucode = g_renderer->gpucode;
 			_gpuenter = g_renderer->gpuenter;
-			N3DToolsFixTextures(g_renderer->texflag);
+			N3DToolsFixAllTextures(g_renderer->texmode);
 			break;
 		}
 	}
@@ -137,12 +138,11 @@ void N3DRender(Bitmap* window, N3DObject* obj, Matrix* cam)
 
 //*****************************************************************************
 
-void N3DSwap() {
+void N3DSwap(void) {
 	VIDsync();
 }
 
 //*****************************************************************************
 
-void N3DDebug() {
-
+void N3DDebug(void) {
 }

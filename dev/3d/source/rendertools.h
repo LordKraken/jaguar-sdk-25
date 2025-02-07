@@ -3,8 +3,9 @@
 
 //*****************************************************************************
 
+extern void N3DToolsInit();
 extern void N3DToolsNextRenderer();
 extern void N3DToolsFixTexture();
-extern void N3DToolsFixTextures();
+extern void N3DToolsFixAllTextures(int);
 
 #endif
