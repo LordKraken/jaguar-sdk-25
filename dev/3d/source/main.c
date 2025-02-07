@@ -6,10 +6,11 @@
 #include "decl/fonts.h"
 #include "decl/math.h"
 
+#include "camera.h"
+#include "object.h"
+#include "models.h"
 #include "renderer.h"
 #include "rendertools.h"
-
-#include "models.h"
 
 #include "demo.c"
 #include "game.h"
@@ -17,15 +18,11 @@
 
 //*****************************************************************************
 
-/****************************************************************
- *	External GPU references					*
- ****************************************************************/
-
 /* storage for packed object lists */
 int packed_olist1[160];
 int packed_olist2[160];
 
-SAngles camangles, objangles;
+N3DAngles objangles;
 
 N3DObject testobj;
 
@@ -34,19 +31,22 @@ N3DObject testobj;
 int main() {
 		int drawbuf;			/* flag: 0 means first buffer, 1 means second */
 	Bitmap *curwindow;		/* pointer to output bitmap */
-	Matrix cammatrix;		/* camera matrix */
-	SAngles* curangles;	/* which set of angles (viewer or camera) are being manipulated */
+	N3DAngles* curangles;	/* which set of angles (viewer or camera) are being manipulated */
 	long buts, shotbuts;		/* joystick buttons pushed */
 	long curframe;			/* current frame counter */
 	long framespersecond;		/* frames per second counter */
 	long time;			/* elapsed time */
-	int curmodel;			/* current model in use (index into table) */
 	char buf[256];			/* scratch buffer for sprintf */
 
 	/* build packed versions of the two object lists */
 	/* (output is double buffered)			 */
 	OLbldto(buf1_olist, packed_olist1);
 	OLbldto(buf2_olist, packed_olist2);
+	
+	N3DGameObject obj, obj2;
+	N3DGameObjectInit(&obj, N3DGetModel(0));
+	N3DGameObjectInit(&obj2, N3DGetModel(4));
+
 
 	/* initialize the video */
 	OLPset(packed_olist2);
@@ -54,32 +54,17 @@ int main() {
 	N3DInit();
 
 	/* clear the drawing area to black */
-	memset(DATA1, 0x00, OBJWIDTH*(long)OBJHEIGHT*2L*3);	/* clear screen to black */
+	memset(DATA1, 0x00, OBJWIDTH*(long) OBJHEIGHT * 2L * 3);	/* clear screen to black */
 
 
 	drawbuf = 0;			/* draw on buffer 1, while displaying buffer 2 */
-	curmodel = 0;			/* initial model to draw */
 
-	/* initialize the test object */
-	memset(&testobj, 0, sizeof(testobj));
-	testobj.data = g_models[curmodel].data;
-	objangles.xpos = g_models[curmodel].initx;	/* get initial position */
-	objangles.ypos = g_models[curmodel].inity;
-	objangles.zpos = g_models[curmodel].initz;
-
-	/* no rotation, initially */
-	objangles.alpha = objangles.beta = objangles.gamma = 0;
-
-	/* set up the viewer's position */
-	camangles.alpha = camangles.beta = camangles.gamma = 0;
-	camangles.xpos = camangles.ypos = 0;
-	camangles.zpos = 0;
-	mkMatrix(&cammatrix, &camangles);
+	CameraInit();
 
 	/* initially all rotation and movement is applied to the object,
 	   not the viewer
 	 */
-	curangles = &objangles;
+	curangles = &(obj.angles);
 
 
 	/* initialize timing information */
@@ -92,7 +77,9 @@ int main() {
 		curwindow = (drawbuf) ? &scrn2 : &scrn1;
 
 		/* generate transformation matrices from angles */
-		mkMatrix(&testobj.M, &objangles);
+		CameraUpdate();
+		N3DGameObjectUpdate(&obj);
+		N3DGameObjectUpdate(&obj2);
 
 		/* clear the current draw buffer */
 		N3DClear(curwindow);
@@ -106,7 +93,8 @@ int main() {
 		 */
 		time = clock();
 
-		N3DRender(curwindow, &testobj, &cammatrix);
+		N3DRender(curwindow, &(obj.n3dobj));
+		N3DRender(curwindow, &(obj2.n3dobj));
 
 		time = clock() - time;
 
@@ -114,8 +102,8 @@ int main() {
 		/* FNTstr draws text; see font.c for details */
 		//FNTstr(20, 0, rend[currender].name, curwindow->data, curwindow->blitflags, usefnt, 0x7fff, 0 );
 
-		sprintf(buf, "%d faces/%d fps", testobj.data->numpolys, (int)framespersecond);
-		FNTstr(20, 12, buf, curwindow->data, curwindow->blitflags, usefnt, 0x27ff, 0);
+		sprintf(buf, "%d faces/%d fps", obj.n3dobj.data->numpolys, (int)framespersecond);
+		FNTstr(20, 12, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
 
 		/* there are MHZ * 100 ticks in a second, and drawing 1 poly takes
 		 * (time/testobj.data->numpolys) ticks,
@@ -124,12 +112,12 @@ int main() {
 		//sprintf(buf, "%ld polys/sec", 100L * ( (MHZ * testobj.data->numpolys)/time) );
 		//FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0x27ff, 0 );
 
-		//sprintf(buf, "texcall %d  texrun %d  texruninternal %d  texmode %d", texfnInCount, texfnRunCount, texfnfixInCount, _lastTextureMode);
-		//FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
+		//sprintf(buf, "x=%d  y=%d  z=%d", objangles.xpos, objangles.ypos, objangles.zpos);
+		//FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
 
 		/* timing statistics */
-		//sprintf(buf, "%08lx draw time", time);
-		//FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0 );
+		sprintf(buf, "%d draw time", time);
+		FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0 );
 
 		/* buts will contain all buttons currently pressed */
 		/* shotbuts will contain the ones that are pressed now, but weren't
@@ -178,40 +166,20 @@ int main() {
 		 * the object
 		 */
 		if (buts & KEY_0) {
-			curangles = &camangles;
-			mkMatrix(&cammatrix, &camangles);
+			curangles = &g_cameraAngles;
 		} else {
-			curangles = &objangles;
-			mkMatrix(&cammatrix, &camangles);
+			curangles = &(obj.angles);
 		}
 
 		if (shotbuts & OPTION) {
-			curmodel++;
-			if (curmodel >= g_modelsCount)
-				curmodel = 0;
-			testobj.data = g_models[curmodel].data;
-
-			objangles.xpos = g_models[curmodel].initx;
-			objangles.ypos = g_models[curmodel].inity;
-			objangles.zpos = g_models[curmodel].initz;
-			objangles.alpha = objangles.beta = objangles.gamma = 0;
+			N3DGameObjectInit(&obj, N3DNextModel());
 		}
 
 		if (shotbuts & KEY_H) {
 			N3DToolsNextRenderer();
-			/*
-			currender++;
-			if (currender >= maxrenderer)
-				currender = 0;
-				*/
 		}
 
 		if (shotbuts & KEY_S) {
-			/*
-			if (currender == 0)
-				currender = maxrenderer;
-			currender--;
-			*/
 		}
 
 		/* display the buffer we just drew */

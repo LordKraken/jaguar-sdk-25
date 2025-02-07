@@ -59,7 +59,9 @@ SRCOBJS = asm/miscasm.o asm/trig.o asm/mkmat.o \
 	asm/wfrend.o asm/gourrend.o asm/gourphr.o \
 	asm/texrend.o asm/flattex.o asm/gstex.o \
 	models/cube.o \
+	source/camera.o \
 	source/models.o \
+	source/object.o \
 	source/renderer.o \
 	source/rendertools.o \
 	source/scene.o \

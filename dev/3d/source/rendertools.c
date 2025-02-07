@@ -1,7 +1,6 @@
 #include "rendertools.h"
 
 #include "decl/renderdef.h"
-#include "n3d.h"
 #include "models.h"
 #include "renderer.h"
 
@@ -15,7 +14,9 @@ void N3DToolsInit(void) {
 	_lastTextureMode = TEXTURE_MODE_NORMAL;
 }
 
-void N3DToolsNextRenderer() {
+//*****************************************************************************
+
+void N3DToolsNextRenderer(void) {
 	ERenderMode mode = g_renderer->mode;
 	mode = (mode + 1) % RENDER_MODE_COUNT;
 	N3DLoad(mode);
@@ -63,7 +64,7 @@ void N3DToolsFixAllTextures(int textureMode) {
 	Bitmap* map;
 
 	for (i = 0; i < g_modelsCount; i++) {
-		curobj = g_models[i].data;
+		curobj = g_models[i].n3ddata;
 		for (j = 0; j < curobj->nummaterials; j++) {
 			map = curobj->materials[j].tmap;
 			if (map) {

@@ -8,16 +8,16 @@
 //*****************************************************************************
 
 typedef struct Angles {
-	short alpha;		/* rotations */
+	short alpha;		/* rotations x, y, z */
 	short beta;
 	short gamma;		
 	short xpos;			/* position */
 	short ypos;
 	short zpos;		
-} SAngles;
+} N3DAngles;
 
 //*****************************************************************************
 
-extern void mkMatrix(Matrix*, SAngles*);
+extern void mkMatrix(Matrix*, N3DAngles*);
 
 #endif

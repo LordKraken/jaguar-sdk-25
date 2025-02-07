@@ -11,11 +11,11 @@
  * (2) starting X,Y,Z coordinates for the model
  */
 typedef struct Model {
-	N3DObjdata* data;
+	N3DObjdata* n3ddata;
 	short initx;
 	short inity;
 	short initz;
 	short reserved;		/* pads structure to a longword boundary */
-} SModel;
+} N3DModel;
 
 #endif

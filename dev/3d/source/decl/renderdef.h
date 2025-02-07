@@ -20,9 +20,9 @@ typedef enum RenderMode {
 
 //*****************************************************************************
 /* (1) The name of the renderer
- * (2) The GPU package to load
- * (3) Entry point for that
- * (4) Are textures in normal format (0) or relative to 0x80 (1)
+ * (2) Are textures in normal format (0) or relative to 0x80 (1)
+ * (3) The GPU package to load
+ * (4) Entry point for that
  */
 typedef struct Renderer {
 	ERenderMode mode;

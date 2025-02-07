@@ -1,19 +1,18 @@
-#ifndef _GAME_MODELS_H_
-#define _GAME_MODELS_H_
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
 
 //*****************************************************************************
 
-#include "decl/model.h"
+#include "decl/math.h"
 
 //*****************************************************************************
 
-extern N3DModel g_models[];
-extern const int g_modelsCount;
-extern N3DModel* g_currentModel;
+extern N3DAngles g_cameraAngles;
+extern Matrix g_cameraMatrix;
 
 //*****************************************************************************
 
-extern N3DModel* N3DGetModel(short);
-extern N3DModel* N3DNextModel();
+extern void CameraInit();
+extern void CameraUpdate();
 
 #endif

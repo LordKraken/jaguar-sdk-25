@@ -5,6 +5,7 @@
 #include "decl/renderdef.h"
 
 #include "blit.h"
+#include "camera.h"
 #include "models.h"
 #include "n3d.h"
 #include "n3dintern.h"
@@ -60,7 +61,7 @@ void N3DInit(void) {
 	_gpucode = 0;
 	_gpuenter = 0;
 
-	N3DLoad(RENDER_MODE_WIREFRAME);
+	N3DLoad(RENDER_MODE_TEXTURE_GOURAUD);
 
 	VIDon(0x6c1);						/* 0x6c1 = CRY; 0x6c7 = RGB */
 	VIDsync();							/* wait for video sync (paranoid code) */
@@ -115,18 +116,19 @@ void N3DLoad(ERenderMode mode) {
 TPoint* tpoints;
 //TPoint tpoints2[1000];
 
-void N3DRender(Bitmap* window, N3DObject* obj, Matrix* cam)
+void N3DRender(Bitmap* window, N3DObject* obj)
 {
 	// load GPU code
 	GPUload(_gpucode);
 
 	// allocate temporary storage
+	//tpoints = malloc(sizeof(TPoint) * obj->data->numpoints);
 	tpoints = malloc(sizeof(TPoint) * obj->data->numpoints);
 
 	params[0] = (long) obj->data;
 	params[1] = (long) &obj->M;
 	params[2] = (long) window;
-	params[3] = (long) cam;
+	params[3] = (long) &g_cameraMatrix;
 	params[4] = (long) &g_lightModel;
 	params[5] = (long) (tpoints);
 	//params[5] = (long)(&tpoints2[0]);
