@@ -92,7 +92,7 @@ PROGS = demo.cof
 ###############################################################################
 
 #CRY_FILES_USED = $(wildcard 3ds/globe/*.cry) $(wildcard 3ds/ship/*.cry)
-CRY_FILES = $(shell ls -S models/globe/*.cry models/radar/*.cry models/ship/*.cry)
+CRY_FILES = $(shell ls -S models/globe/*.cry models/radar/*.cry models/ship/*.cry models/cube2/*.cry)
 FIXDATA = $(foreach file, $(CRY_FILES), -ii $(file) _$(basename $(notdir $(file)))) \
 		-ii $(FONTDIR)/clr6x12.jft _usefnt
 
