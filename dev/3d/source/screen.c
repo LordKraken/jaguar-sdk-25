@@ -1,9 +1,5 @@
 #include "screen.h"
 
-#include "n3d.h"
-#include "blit.h"
-#include "olist.h"
-
 #include "decl/renderdef.h"
 
 //*****************************************************************************
@@ -32,7 +28,7 @@ extern short DISPBUF1[];
 
 //*****************************************************************************
 
-union olist _screen1ObjectList[] = {
+union olist g_olistScreen1[] = {
 	{{	OL_BITMAP,				/* type */
 		0, 0,					/* x, y */
 	 	0L,						/* link */
@@ -49,7 +45,7 @@ union olist _screen1ObjectList[] = {
 	{{	OL_STOP }},
 };
 
-union olist _screen2ObjectList[] = {
+union olist g_olistScreen2[] = {
 	{{	OL_BITMAP,				/* type */
 		0, 0,					/* x, y */
 	 	0L,						/* link */
@@ -66,7 +62,7 @@ union olist _screen2ObjectList[] = {
 	{{	OL_STOP }},
 };
 
-Bitmap _screen1Bitmap = {
+Bitmap g_bitmapScreen1 = {
 	CAMERA_WIDTH, 
 	CAMERA_HEIGHT,
 	PIXEL16 | PITCH3 | ZOFFS2 | BLTTER_WIDTH_FLAG,
@@ -74,7 +70,7 @@ Bitmap _screen1Bitmap = {
 		(((OBJECT_HEIGHT - CAMERA_HEIGHT) / 2) * LINE_LENTH)),
 };
 
-Bitmap _screen2Bitmap = {
+Bitmap g_bitmapScreen2 = {
 	CAMERA_WIDTH,
 	CAMERA_HEIGHT,
 	PIXEL16 | PITCH3 | ZOFFS1 | BLTTER_WIDTH_FLAG,

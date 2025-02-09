@@ -2,6 +2,8 @@
 // PROJECT TOP GEAR
 //*****************************************************************************
 
+#include "joypad.h"
+
 #include "decl/globals.h"
 #include "decl/fonts.h"
 #include "decl/math.h"
@@ -11,8 +13,8 @@
 #include "models.h"
 #include "renderer.h"
 #include "rendertools.h"
+#include "screen.c"
 
-#include "demo.c"
 #include "game.h"
 #include "scene.h"
 #include "tools.h"
@@ -37,8 +39,8 @@ int main() {
 
 	/* build packed versions of the two object lists */
 	/* (output is double buffered)			 */
-	OLbldto(buf1_olist, packed_olist1);
-	OLbldto(buf2_olist, packed_olist2);
+	OLbldto(g_olistScreen1, packed_olist1);
+	OLbldto(g_olistScreen2, packed_olist2);
 
 	N3DGameObject obj, obj2;
 	N3DGameObjectInit(&obj, N3DGetModel(1));
@@ -51,12 +53,14 @@ int main() {
 	N3DInit();
 
 	/* clear the drawing area to black */
-	memset(DATA1, 0x00, OBJWIDTH*(long) OBJHEIGHT * 2L * 3);	/* clear screen to black */
+	//memset(DATA1, 0x00, OBJWIDTH * (long) OBJHEIGHT * 2L * 3);	/* clear screen to black */
 
 
 	drawbuf = 0;			/* draw on buffer 1, while displaying buffer 2 */
 
 	N3DCameraInit();
+	N3DCameraMove(0, -0x100, -0x400);
+	N3DCameraRotate(-0x20, 0, 0);
 
 	/* initially all rotation and movement is applied to the object,
 	   not the viewer
@@ -83,7 +87,7 @@ int main() {
 
 			while (!IsLevelOver()) {
 				/* select bitmap for drawing */
-				curwindow = (drawbuf) ? &scrn2 : &scrn1;
+				curwindow = (drawbuf) ? &g_bitmapScreen2 : &g_bitmapScreen1;
 
 				/* generate transformation matrices from angles */
 				N3DCameraUpdate();
@@ -123,10 +127,12 @@ int main() {
 
 				sprintf(buf, "x=%d  y=%d  z=%d", g_cameraAngles.xpos, g_cameraAngles.ypos, g_cameraAngles.zpos);
 				FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
+				//sprintf(buf, "rx=%d  ry=%d  rz=%d", g_cameraAngles.alpha, g_cameraAngles.beta, g_cameraAngles.gamma);
+				//FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
 
 				/* timing statistics */
-				sprintf(buf, "%d draw time", time);
-				FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0 );
+				//sprintf(buf, "%d draw time", time);
+				//FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0 );
 
 				/* buts will contain all buttons currently pressed */
 				/* shotbuts will contain the ones that are pressed now, but weren't
@@ -134,37 +140,48 @@ int main() {
 				 */
 				buts = JOYget(JOY1);
 				shotbuts = JOYedge(JOY1);
+				int dz = 1;
 
-				if (buts & FIRE_A) {
-				}
-				else if (buts & FIRE_B) {
+				if (buts & FIRE_B) {
+					if (buts & JOY_UP) {
+						N3DCameraMove(0, 0x10, 0);
+					}
+					else if (buts & JOY_DOWN) {
+						N3DCameraMove(0, -0x10, 0);
+					}
 				}
 				else if (buts & FIRE_C) {
+					dz = 4;
 				}
+				
+				if (buts & FIRE_A) {
+					if (buts & JOY_UP) {
+						N3DCameraRotate(0x10, 0, 0);
+					}
+					else if (buts & JOY_DOWN) {
+						N3DCameraRotate(-0x10, 0, 0);
+					}
 
-				if (buts & JOY_UP) {
-					//N3DCameraMove(0, 0, 0x10);
-					N3DCameraForward(1);
-				}
-				else if (buts & JOY_DOWN) {
-					//N3DCameraMove(0, 0, -0x10);
-					N3DCameraForward(-1);
-				}
-
-				if (buts & JOY_LEFT) {
-					if (buts & FIRE_A) {
+					if (buts & JOY_LEFT) {
 						N3DCameraRotate(0, -0x10, 0);
 					}
-					else {
-						N3DCameraMove(-0x10, 0, 0);
-					}
-				}
-				else if (buts & JOY_RIGHT) {
-					if (buts & FIRE_A) {
+					else if (buts & JOY_RIGHT) {
 						N3DCameraRotate(0, 0x10, 0);
 					}
-					else {
-						N3DCameraMove(0x10, 0, 0);
+				}
+				else {
+					if (buts & JOY_UP) {
+						N3DCameraForward(dz);
+					}
+					else if (buts & JOY_DOWN) {
+						N3DCameraForward(-dz);
+					}
+
+					if (buts & JOY_LEFT) {
+						N3DCameraStrife(dz);
+					}
+					else if (buts & JOY_RIGHT) {
+						N3DCameraStrife(-dz);
 					}
 				}
 

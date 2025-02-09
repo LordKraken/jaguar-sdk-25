@@ -67,7 +67,6 @@ SRCOBJS = asm/miscasm.o asm/trig.o asm/mkmat.o \
 	source/scene.o \
 	source/screen.o \
 	source/tools.o \
-	source/demo.o \
 	source/game.o \
 	source/main.o
 

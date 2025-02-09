@@ -3,6 +3,19 @@
 
 //*****************************************************************************
 
+#include "blit.h"
+#include "n3d.h"
+#include "olist.h"
+
+//*****************************************************************************
+
+extern union olist g_olistScreen1[];
+extern union olist g_olistScreen2[];
+extern Bitmap g_bitmapScreen1;
+extern Bitmap g_bitmapScreen2;
+
+//*****************************************************************************
+
 extern void N3DScreenInit();
 
 #endif

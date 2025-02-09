@@ -34,7 +34,7 @@ void N3DToolsNextRenderer(void) {
  * again, calling this function each time we switch.
  */				
 void N3DToolsFixTexture(Bitmap* texture) {
-	long *lsrc;
+	long* lsrc;
 	long numpixs;
 	long i;
 	numpixs = ((long) texture->width * (long) texture->height) / 4;
@@ -54,21 +54,17 @@ void N3DToolsFixTexture(Bitmap* texture) {
  */
 
 void N3DToolsFixAllTextures(int textureMode) {
-	int i, j;
-
 	if (textureMode == _lastTextureMode) {
 		return;
 	}
 
-	N3DObjdata* curobj;
-	Bitmap* map;
-
+	int i, j;
 	for (i = 0; i < g_modelsCount; i++) {
-		curobj = g_models[i].n3ddata;
-		for (j = 0; j < curobj->nummaterials; j++) {
-			map = curobj->materials[j].tmap;
-			if (map) {
-				N3DToolsFixTexture(map);
+		N3DObjdata* objData = g_models[i].n3ddata;
+		for (j = 0; j < objData->nummaterials; j++) {
+			Bitmap* bm = objData->materials[j].tmap;
+			if (bm) {
+				N3DToolsFixTexture(bm);
 			}
 		}
 	}
