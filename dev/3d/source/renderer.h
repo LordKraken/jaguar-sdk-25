@@ -21,6 +21,7 @@ extern const short _renderersCount;
 
 extern void N3DInit();
 extern void N3DLoad();
+extern void N3DBuild();
 extern void N3DClear();
 extern void N3DRender();
 extern void N3DSwap();

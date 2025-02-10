@@ -72,7 +72,8 @@ void N3DInit(void) {
  * and its Z buffer with a null value
  */
 void N3DClear(Bitmap* buf) {
-	long bgcolor = 0xf8f0f8f0;			/* Fill color in CRY format, duplicated */
+	//long bgcolor = 0xf8f0f8f0;			/* Fill color in CRY format, duplicated */
+	long bgcolor = 0x00000000;			/* Fill color in CRY format, duplicated */
 	long zvalue = 0xffffffff;			/* Z value (16.16 fraction) */
 
 	B_PATD[0] = bgcolor;
@@ -103,6 +104,12 @@ void N3DLoad(ERenderMode mode) {
 			break;
 		}
 	}
+}
+
+//*****************************************************************************
+
+void N3DBuild() {
+
 }
 
 //*****************************************************************************

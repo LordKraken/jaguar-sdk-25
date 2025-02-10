@@ -75,6 +75,7 @@ MODELS = models/castle/castle.o \
 	models/radar/radar.o \
 	models/ship/ship.o \
 	models/cube2/cube2.o \
+	models/feisar/feisar.o \
 	models/knight.o \
 	models/robot.o \
 	models/torus.o 
@@ -120,3 +121,4 @@ include $(JAGSDK)/tools/build/jagrules.mk
 
 all:
 #@echo $(TEXTURES)
+#@echo $(CRY_FILES)

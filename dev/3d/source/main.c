@@ -29,44 +29,35 @@ int packed_olist2[160];
 
 int main() {
 		int drawbuf;			/* flag: 0 means first buffer, 1 means second */
-	Bitmap *curwindow;		/* pointer to output bitmap */
-	N3DAngles* curangles;	/* which set of angles (viewer or camera) are being manipulated */
 	long buts, shotbuts;		/* joystick buttons pushed */
 	long curframe;			/* current frame counter */
 	long framespersecond;		/* frames per second counter */
 	long time;			/* elapsed time */
 	char buf[256];			/* scratch buffer for sprintf */
 
+	N3DGameObject obj, obj2;
+	N3DGameObjectInit(&obj, N3DGetModel(1));
+	N3DGameObjectInit(&obj2, N3DGetModel(3));
+
 	/* build packed versions of the two object lists */
 	/* (output is double buffered)			 */
 	OLbldto(g_olistScreen1, packed_olist1);
 	OLbldto(g_olistScreen2, packed_olist2);
 
-	N3DGameObject obj, obj2;
-	N3DGameObjectInit(&obj, N3DGetModel(1));
-	N3DGameObjectInit(&obj2, N3DGetModel(6));
-
-
 	/* initialize the video */
 	OLPset(packed_olist2);
 	
-	N3DInit();
-
 	/* clear the drawing area to black */
-	//memset(DATA1, 0x00, OBJWIDTH * (long) OBJHEIGHT * 2L * 3);	/* clear screen to black */
+	memset(SCREEN_BUFFER_1, 0x00, 320 * (long) 240 * 3);	/* clear screen to black */
+	memset(SCREEN_BUFFER_2, 0x00, 320 * (long) 240 * 3);
 
+	N3DInit();
 
 	drawbuf = 0;			/* draw on buffer 1, while displaying buffer 2 */
 
 	N3DCameraInit();
 	N3DCameraMove(0, -0x100, -0x400);
 	N3DCameraRotate(-0x20, 0, 0);
-
-	/* initially all rotation and movement is applied to the object,
-	   not the viewer
-	 */
-	curangles = &(obj.angles);
-
 
 	/* initialize timing information */
 	curframe = _timestamp;			/* timestamp is updated every vblank, and is elapsed time in 300ths of a second */
@@ -87,7 +78,10 @@ int main() {
 
 			while (!IsLevelOver()) {
 				/* select bitmap for drawing */
-				curwindow = (drawbuf) ? &g_bitmapScreen2 : &g_bitmapScreen1;
+				Bitmap* curwindow = (drawbuf) ? &g_bitmapScreen2 : &g_bitmapScreen1;
+				Bitmap* debugWindow = (drawbuf) ? &g_debugScreen2 : &g_debugScreen1;
+
+				obj2.angles.beta += 0x10;
 
 				/* generate transformation matrices from angles */
 				N3DCameraUpdate();
@@ -96,6 +90,7 @@ int main() {
 
 				/* clear the current draw buffer */
 				N3DClear(curwindow);
+				N3DClear(debugWindow);
 
 				/* now draw the object, timing how long it takes */
 				/* NOTE: the clock() function uses unsupported hardware
@@ -115,8 +110,8 @@ int main() {
 				/* FNTstr draws text; see font.c for details */
 				//FNTstr(20, 0, rend[currender].name, curwindow->data, curwindow->blitflags, usefnt, 0x7fff, 0 );
 
-				sprintf(buf, "%d faces/%d fps", obj.n3dobj.data->numpolys, (int)framespersecond);
-				FNTstr(20, 12, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
+				sprintf(buf, "%d faces/%d fps", obj.n3dobj.data->numpolys + obj2.n3dobj.data->numpolys, (int)framespersecond);
+				FNTstr(20, 12, buf, debugWindow->data, debugWindow->blitflags, usefnt, 0xf0ff, 0);
 
 				/* there are MHZ * 100 ticks in a second, and drawing 1 poly takes
 				 * (time/testobj.data->numpolys) ticks,
@@ -126,7 +121,7 @@ int main() {
 				//FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0x27ff, 0 );
 
 				sprintf(buf, "x=%d  y=%d  z=%d", g_cameraAngles.xpos, g_cameraAngles.ypos, g_cameraAngles.zpos);
-				FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
+				//FNTstr(20, 24, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
 				//sprintf(buf, "rx=%d  ry=%d  rz=%d", g_cameraAngles.alpha, g_cameraAngles.beta, g_cameraAngles.gamma);
 				//FNTstr(20, 36, buf, curwindow->data, curwindow->blitflags, usefnt, 0xf0ff, 0);
 
@@ -196,6 +191,7 @@ int main() {
 				if (shotbuts & KEY_S) {
 					N3DGameObjectInit(&obj, N3DGetModel(1));
 				}
+
 
 				/* display the buffer we just drew */
 				OLPset(drawbuf ? packed_olist2 : packed_olist1);
