@@ -186,4 +186,10 @@ OLbuild(union olist *unpacked) {
 	return packed;
 }
 
+// Added for N3Dx engine
+void OLfree(void* packed) {
+	if (packed) {
+		free(packed);
+	}
+}
 
