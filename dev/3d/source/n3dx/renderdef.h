@@ -1,5 +1,5 @@
-#ifndef _RENDER_DEF_H_
-#define _RENDER_DEF_H_
+#ifndef _N3D_RENDER_DEF_H_
+#define _N3D_RENDER_DEF_H_
 
 //*****************************************************************************
 

@@ -58,16 +58,15 @@ LIBOBJS = $(LIB)/alloc.o  $(LIB)/ctype.o $(LIB)/font.o \
 SRCOBJS = asm/miscasm.o asm/trig.o asm/mkmat.o \
 	asm/wfrend.o asm/gourrend.o asm/gourphr.o \
 	asm/texrend.o asm/flattex.o asm/gstex.o \
-	models/cube.o \
-	source/camera.o \
-	source/models.o \
-	source/object.o \
-	source/renderer.o \
-	source/rendertools.o \
-	source/scene.o \
-	source/screen.o \
-	source/tools.o \
+	source/n3dx/camera.o \
+	source/n3dx/gameobject.o \
+	source/n3dx/modeldata.o \
+	source/n3dx/renderbuffers.o \
+	source/n3dx/rendertools.o \
+	source/n3dx/renderer.o \
 	source/game.o \
+	source/scene.o \
+	source/tools.o \
 	source/main.o
 
 MODELS = models/castle/castle.o \

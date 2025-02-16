@@ -1,21 +1,20 @@
 #include "renderer.h"
 
-#include "decl/globals.h"
-#include "decl/lights.h"
-#include "decl/renderdef.h"
-
-#include "blit.h"
-#include "camera.h"
-#include "models.h"
 #include "n3d.h"
 #include "n3dintern.h"
+#include "blit.h"
+
+#include "camera.h"
+#include "globals.h"
+#include "lights.h"
+#include "modeldata.h"
+#include "renderdef.h"
+#include "renderbuffers.h"
 #include "rendertools.h"
 
 //*****************************************************************************
 
-extern void VIDon(int);					/* turns video on */
-extern void VIDsync(void);				/* waits for a vertical blank interrupt */
-extern void GPUload(long *);			/* loads a package into the GPU */
+extern void GPUload(long*);				/* loads a package into the GPU */
 extern void GPUrun(void (*)());			/* runs a GPU program */
 
 //*****************************************************************************
@@ -47,7 +46,7 @@ SRenderer _renderers[] = {
 };
 const short _renderersCount = sizeof(_renderers) / sizeof(SRenderer);
 
-// Current renderer and current rendering functions
+// Current renderer and rendering functions
 SRenderer* g_renderer;
 long* _gpucode;
 void (*_gpuenter)();
@@ -55,45 +54,20 @@ void (*_gpuenter)();
 //*****************************************************************************
 
 void N3DInit(void) {
+	N3DScreenInit();
 	N3DToolsInit();
+	N3DCameraInit();
 
 	g_renderer = 0;
 	_gpucode = 0;
 	_gpuenter = 0;
 
-	N3DLoad(RENDER_MODE_TEXTURE_GOURAUD);
-
-	VIDon(0x6c1);						/* 0x6c1 = CRY; 0x6c7 = RGB */
-	VIDsync();							/* wait for video sync (paranoid code) */
-}
-
-//*****************************************************************************
-/* Clears the bitmap pointed to by "buf", filling its data with a solid color,
- * and its Z buffer with a null value
- */
-void N3DClear(Bitmap* buf) {
-	//long bgcolor = 0xf8f0f8f0;			/* Fill color in CRY format, duplicated */
-	long bgcolor = 0x00000000;			/* Fill color in CRY format, duplicated */
-	long zvalue = 0xffffffff;			/* Z value (16.16 fraction) */
-
-	B_PATD[0] = bgcolor;
-	B_PATD[1] = bgcolor;
-	B_Z3 = zvalue;
-	B_Z2 = zvalue;
-	B_Z1 = zvalue;
-	B_Z0 = zvalue;
-	A1_BASE = (long) buf->data;
-	A1_STEP = 0x00010000L | ((-buf->width) & 0x0000ffff);
-	A1_FLAGS = buf->blitflags | XADDPHR;
-	A1_PIXEL = 0;
-	A1_CLIP = 0;
-	B_COUNT = ((long) buf->height << 16) | (buf->width);
-	B_CMD = UPDA1|DSTWRZ|PATDSEL;
+	N3DMode(RENDER_MODE_TEXTURE_GOURAUD);
 }
 
 //*****************************************************************************
 
-void N3DLoad(ERenderMode mode) {
+void N3DMode(ERenderMode mode) {
 	int i;
 	for (i = 0; i < _renderersCount; i++) {
 		if (_renderers[i].mode == mode) {
@@ -109,7 +83,6 @@ void N3DLoad(ERenderMode mode) {
 //*****************************************************************************
 
 void N3DBuild() {
-
 }
 
 //*****************************************************************************
@@ -143,12 +116,6 @@ void N3DRender(Bitmap* window, N3DObject* obj)
 	GPUrun(_gpuenter);
 
 	free(tpoints);
-}
-
-//*****************************************************************************
-
-void N3DSwap(void) {
-	VIDsync();
 }
 
 //*****************************************************************************

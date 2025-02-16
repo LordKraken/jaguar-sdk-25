@@ -1,5 +1,5 @@
-#ifndef _LIGHTS_DEF_H_
-#define _LIGHTS_DEF_H_
+#ifndef _N3D_LIGHTS_DEF_H_
+#define _N3D_LIGHTS_DEF_H_
 
 //*****************************************************************************
 
@@ -8,8 +8,8 @@
 //*****************************************************************************
 
 Lightmodel g_lightModel = {
-	0x2222,				/* ambient illumination */
-	1,					/* number of lights */
+	0x2222,				/* Ambient illumination */
+	1,					/* Number of lights */
 	{					/* Light definitions */
 	  { -0x24f3, -0x24f3, -0x24f3, 0x4000 },
 	  { 0, 0, 0, 0xC000 },

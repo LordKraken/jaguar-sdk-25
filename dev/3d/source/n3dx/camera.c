@@ -1,7 +1,5 @@
 #include "camera.h"
 
-#include "decl/math.h"
-
 //*****************************************************************************
 
 N3DAngles g_cameraAngles;

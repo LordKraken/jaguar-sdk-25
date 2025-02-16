@@ -67,9 +67,9 @@ echo "*** Copying rom file to ${JAGWIN}"
 mkdir -p ${JAGWIN}
 cp "${JAGFOLDER}/${JAGROM}" ${JAGWIN}
 
-echo "*** Copying rom file to ${JAGWIN2}"
-mkdir -p ${JAGWIN2}
-cp ${JAGFOLDER}/${JAGROM} ${JAGWIN2}
+#echo "*** Copying rom file to ${JAGWIN2}"
+#mkdir -p ${JAGWIN2}
+#cp ${JAGFOLDER}/${JAGROM} ${JAGWIN2}
 
 echo "*** Compilation over!"
 

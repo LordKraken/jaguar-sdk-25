@@ -1,5 +1,5 @@
-#ifndef _MATH_DEF_H_
-#define _MATH_DEF_H_
+#ifndef _N3D_MATH_DEF_H_
+#define _N3D_MATH_DEF_H_
 
 //*****************************************************************************
 

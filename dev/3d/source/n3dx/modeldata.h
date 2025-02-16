@@ -1,9 +1,9 @@
-#ifndef _GAME_MODELS_H_
-#define _GAME_MODELS_H_
+#ifndef _MODEL_DATA_H_
+#define _MODEL_DATA_H_
 
 //*****************************************************************************
 
-#include "decl/model.h"
+#include "model.h"
 
 //*****************************************************************************
 

@@ -1,12 +1,11 @@
-#ifndef _GAME_OBJECT_H_
-#define _GAME_OBJECT_H_
+#ifndef _N3D_GAME_OBJECT_H_
+#define _N3D_GAME_OBJECT_H_
 
 //*****************************************************************************
 
 #include "n3d.h"
-
-#include "decl/math.h"
-#include "decl/model.h"
+#include "math.h"
+#include "model.h"
 
 //*****************************************************************************
 

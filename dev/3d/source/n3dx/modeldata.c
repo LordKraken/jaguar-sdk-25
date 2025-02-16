@@ -1,8 +1,14 @@
-#include "models.h"
+#include "modeldata.h"
 
 //*****************************************************************************
 
-extern N3DObjdata globedata, cube2data, castledata, feisardata, robotdata, shipdata, radardata;
+extern N3DObjdata globedata, 
+	cube2data, 
+	castledata, 
+	feisardata, 
+	robotdata, 
+	shipdata, 
+	radardata;
 
 N3DModel g_models[] = {
 	{ &globedata, 0, 0, 320, 0 },

@@ -1,7 +1,7 @@
 #include "rendertools.h"
 
-#include "decl/renderdef.h"
-#include "models.h"
+#include "modeldata.h"
+#include "renderdef.h"
 #include "renderer.h"
 
 //*****************************************************************************
@@ -19,7 +19,7 @@ void N3DToolsInit(void) {
 void N3DToolsNextRenderer(void) {
 	ERenderMode mode = g_renderer->mode;
 	mode = (mode + 1) % RENDER_MODE_COUNT;
-	N3DLoad(mode);
+	N3DMode(mode);
 }
 
 //*****************************************************************************

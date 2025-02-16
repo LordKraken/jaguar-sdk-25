@@ -1,5 +1,5 @@
-#ifndef _RENDERER_H_
-#define _RENDERER_H_
+#ifndef _N3D_RENDERER_H_
+#define _N3D_RENDERER_H_
 
 //*****************************************************************************
 
@@ -17,14 +17,10 @@ extern long _timestamp;					/* library count of number of 300ths of a second ela
 
 //*****************************************************************************
 
-extern const short _renderersCount;
-
 extern void N3DInit();
-extern void N3DLoad();
+extern void N3DMode();
 extern void N3DBuild();
-extern void N3DClear();
 extern void N3DRender();
-extern void N3DSwap();
 extern void N3DDebug();
 
 #endif

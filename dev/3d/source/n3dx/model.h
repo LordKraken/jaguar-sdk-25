@@ -1,5 +1,5 @@
-#ifndef _MODEL_DEF_H_
-#define _MODEL_DEF_H_
+#ifndef _N3D_MODEL_DEF_H_
+#define _N3D_MODEL_DEF_H_
 
 //*****************************************************************************
 

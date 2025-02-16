@@ -1,9 +1,6 @@
-#include "object.h"
+#include "gameobject.h"
 
-//*****************************************************************************
-
-#include "string.h"
-#include "models.h"
+#include "globals.h"
 
 //*****************************************************************************
 
@@ -17,6 +14,8 @@ void N3DGameObjectInit(N3DGameObject* go, N3DModel* model) {
 		go->angles.ypos = go->model->inity;
 		go->angles.zpos = go->model->initz;
 	}
+
+	N3DGameObjectUpdate(go);
 }
 
 //*****************************************************************************
